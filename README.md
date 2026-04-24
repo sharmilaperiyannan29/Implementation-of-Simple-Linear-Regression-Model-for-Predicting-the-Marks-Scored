@@ -8,10 +8,10 @@ To write a program to predict the marks scored by a student using the simple lin
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. 
-2. 
-3. 
-4. 
+1. Import required libraries and prepare the dataset (X and Y values).
+2.Create and train the simple linear regression model using the dataset.
+3.Accept input (hours studied) and predict the marks using the trained model.
+4.Display the predicted result and visualize the data using a graph.
 
 ## Program:
 ```
@@ -21,29 +21,50 @@ Developed by: Sharmila P
 RegisterNumber: 212225230261
 */
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
-x=np.array(eval(input()))
-y=np.array(eval(input()))
-x_mean=np.mean(x)
-y_mean=np.mean(y)
-num=0
-denom=0
-for i in range(len(x)):
-    num+=(x[i]-x_mean)*(y[i]-y_mean)
-    denom+=(x[i]-x_mean)**2
-m=num/denom
-b=y_mean-m*x_mean
-print(m,b)
-y_predicted=m*x+b
-print(y_predicted)
-plt.scatter(x,y)
-plt.plot(x,y_predicted,color='red')
-plt.show()
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+data = {
+    "Hours_Studied": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "Marks_Scored":  [35, 40, 50, 55, 60, 65, 70, 80, 85, 95]
+}
+df = pd.DataFrame(data)
 
+print("Dataset:\n", df.head())
+df
+
+X = df[["Hours_Studied"]]   
+y = df["Marks_Scored"]      
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+print("\nModel Parameters:")
+print("Intercept (b0):", model.intercept_)
+print("Slope (b1):", model.coef_[0])
+
+print("\nEvaluation Metrics:")
+print("Mean Squared Error:", mean_squared_error(y_test, y_pred))
+print("R² Score:", r2_score(y_test, y_pred))
+plt.figure(figsize=(8,6))
+plt.scatter(X, y, color='blue', label="Actual Data")
+plt.plot(X, model.predict(X), color='red', linewidth=2, label="Regression Line")
+plt.xlabel("Hours Studied")
+plt.ylabel("Marks Scored")
+plt.title("Simple Linear Regression: Predicting Marks")
+plt.legend()
+plt.grid(True)
+plt.show()
 ```
 
 ## Output:
-<img width="640" height="618" alt="image" src="https://github.com/user-attachments/assets/de592954-3432-4af5-8d4b-919e4a8a42c7" />
+
+<img width="642" height="726" alt="image" src="https://github.com/user-attachments/assets/be4615af-1425-46d8-8178-6e2ef7d6c0f4" />
 
 
 
